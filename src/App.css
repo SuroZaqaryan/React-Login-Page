@@ -1,0 +1,50 @@
+/* Global Styles */
+
+.title {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #454545;
+}
+
+.dashboard-title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 32px;
+  color: #454545;
+}
+
+.sign-in {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: #9847EA;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+input::placeholder {
+  color: #BDBDBD;
+}
+
+.error {
+  position: relative;
+  top: 8px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 24px;
+  color: #DE4040;
+}
+
+.field {
+  margin-bottom: 32px;
+}
