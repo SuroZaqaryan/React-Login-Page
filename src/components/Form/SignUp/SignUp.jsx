@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import '../../../App.css'
 import Row from 'react-bootstrap/Row';
@@ -45,6 +45,10 @@ const SignUp = props => {
         border: 'none',
         padding: '12px 0',
         fontWeight: '500',
+        link: {
+            color: '#9847EA',
+            textDecoration: 'none',
+        }
     }
 
     return (
@@ -141,7 +145,7 @@ const SignUp = props => {
 
                     <Row style={{ marginTop: '56px' }} className="text-center">
                         <p>Have an account ? <span className='sign-in'>
-                            <Link to={'/sign-in'}>Sign Up</Link></span></p>
+                            <Link style={btnSubmit.link} to={'/sign-in'}>Sign Up</Link></span></p>
                     </Row>
                 </form>
             </div>

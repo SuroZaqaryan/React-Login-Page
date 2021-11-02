@@ -48,3 +48,11 @@ input::placeholder {
 .field {
   margin-bottom: 32px;
 }
+
+.user-list {
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 16px;
+  margin-top: 16px;
+  padding: 24px 32px;
+}

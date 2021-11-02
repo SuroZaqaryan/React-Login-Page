@@ -2,29 +2,47 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../App.css'
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, Redirect } from "react-router-dom";
 import validate from '../Form/FormValidate/FormValidate'
 import useForm from "./useForm/useForm";
 
 const Register = props => {
-    const { values, errors, handleChange, handleSubmit } = useForm(
-        login,
+    const { values, errors } = useForm(
         validate
     );
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const [email, setEmail] = useState('test@mail.com');
+    const [password, setPassword] = useState('123123123');
+    const [error, setError] = useState('');
+    const [admin, setAdmin] = useState('');
 
-    function login() {
-        axios.post('http://192.168.1.186:3000/api/auth/login', values)
-            .then(response => {
-                console.log(response)
-            });
-
-        setLoggedIn(true);
-        props.parentCallback(true);
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (email === 'admin@mail.ru') {
+            setAdmin('admin')
+        }
+        if (email === '' || password === '') {
+            setError('Fill in all the fields')
+        }
+        else if (!/\S+@\S+\.\S+/.test(email)) {
+            setError('Email address is invalid')
+        }
+        else if (password.length < 8) {
+            setError('Password must be 8 or more characters')
+        }
+        else {
+            setError('')
+            axios.post('http://192.168.1.186:3000/api/auth/login', values)
+                .then(response => {
+                    console.log(response)
+                });
+            setLoggedIn(true);
+            props.parentCallback(true);
+        }
     }
+
 
     const formContainer = {
         maxWidth: '444px',
@@ -49,15 +67,25 @@ const Register = props => {
         borderRadius: '8px',
         border: 'none',
         padding: '12px 0',
+        color: '#fff',
         fontWeight: '500',
+        link: {
+            color: '#9847EA',
+            textDecoration: 'none',
+        }
     }
 
     return (
         <div className="section is-fullheight">
-            {loggedIn && <Redirect to={{
-                pathname: "/Dashboard",
-                state: { type: 'admin' }
-            }} to="/Dashboard" />}
+            {loggedIn && 
+            <Redirect
+            to={{
+              pathname: "/Dashboard",
+              state: { type: admin }
+            }}
+          />
+          
+            }
             <div className="container">
                 <form onSubmit={handleSubmit} style={formContainer} noValidate>
                     <div style={{ marginBottom: '48px' }} className="text-center title">
@@ -71,14 +99,12 @@ const Register = props => {
                             className={`input ${errors.email && "is-danger"} w-100`}
                             type="email"
                             name="email"
-                            onChange={handleChange}
-                            value={values.email || ""}
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
                             placeholder='Email'
                             required
                         />
-                        {errors.email && (
-                            <p className="error">{errors.email}</p>
-                        )}
+
                     </div>
                     <div className="field">
                         <input
@@ -86,24 +112,24 @@ const Register = props => {
                             className={`input ${errors.password && "is-danger"} w-100`}
                             type="password"
                             name="password"
-                            onChange={handleChange}
-                            value={values.password || ""}
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
                             placeholder='Password'
                             required
                         />
-                        {errors.password && (
-                            <p className="error">{errors.password}</p>
-                        )}
+                        <p className="error">{error}</p>
                     </div>
 
-                    <Button onClick={login} style={btnSubmit} className="w-100" variant="primary">
-                        Submit
-                    </Button>
+
+                    <button type='submit' style={btnSubmit} className="w-100">
+                    Submit
+                    </button>
 
                     <Row style={{ marginTop: '56px' }} className="text-center">
                         <p>Have an account ? <span className='sign-in'>
-                            <Link to={'/sign-up'}
-                            >Sign in</Link>
+
+                            <Link style={btnSubmit.link} to={'/sign-up'}>Sign in</Link>
+
                         </span></p>
                     </Row>
                 </form>
