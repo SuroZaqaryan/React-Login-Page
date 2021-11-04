@@ -31,7 +31,7 @@
   cursor: pointer !important;
 }
 
-input::placeholder {
+input::placeholder, .form-create-user > div > div > input::placeholder {
   color: #BDBDBD;
 }
 
@@ -59,4 +59,17 @@ input::placeholder {
 
 .user-list > div:last-child {
   margin-bottom: 0 !important;
+}
+
+.form-create-user {
+  margin-top: 1rem;
+}
+
+.form-create-user > div > div > input {
+  margin-bottom: 2rem;
+  border: none;
+}
+
+.creat-user-modal > .modal-dialog {
+  max-width: 576px;
 }

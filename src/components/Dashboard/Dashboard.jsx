@@ -92,13 +92,18 @@ function Dashboard() {
     setItems([
       ...items,
       {
-        id: 1,
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
       }
-    ]);
+    ],
+      handleCloseCreateUser(),
+      setFirstName(''),
+      setLastName(''),
+      setEmail(''),
+      setPassword(''),
+    );
   };
 
   function removeUser(index) {
@@ -192,20 +197,13 @@ function Dashboard() {
         </div>
       </div>
 
-      <Modal show={show} scrollable={true} onHide={handleClose}>
+      <Modal  className='creat-user-modal' show={show} scrollable={true} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>All Users</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            {/* <Button
-              onClick={addItem}
-              style={{ ...button, maxWidth: '151px', padding: '8px 0', border: '1px solid #9847EA', background: 'transparent' }} className='w-50 pointer'>
-              <p className='m-0' style={button.btnTypography}> <span>
-                <img src={Add} alt="add" />
-              </span>
-                <span style={{ color: '#9847EA' }}>Create User</span></p>
-            </Button> */}
+      
 
             <Button
               onClick={handleShowCreateUser}
@@ -245,38 +243,41 @@ function Dashboard() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-        </Modal.Footer>
+        </Modal.Footer> 
       </Modal>
 
       <Modal show={showModalCreateUser} onHide={handleCloseCreateUser}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{border: 'none'}} closeButton>
           <Modal.Title>Create User</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={addItem}>
+        <Form onSubmit={addItem} className='form-create-user'>
           <Modal.Body>
-
             <Form.Group className="mb-3" >
-              <Form.Control value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
+              <Form.Control required value={firstName}
+               onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
+              <Form.Control required value={lastName}
+               onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" />
+              <Form.Control required value={email}
+               onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+              <Form.Control required value={password} 
+              onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
             </Form.Group>
 
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer style={{border: 'none'}}>
             <div className='w-100 d-flex align-items-center'>
-              <Button className='w-50' style={{ marginRight: '5px' }} variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button type="submit" className='w-50' variant="primary" >
-                Create
-              </Button>
+              <Button onClick={handleCloseCreateUser}
+                style={{ ...button, marginRight: '0.6rem' }}
+                className='pointer w-50'>
+                <p style={button.btnTypography} className='m-0'>Cancel</p></Button>
+              <Button type="submit" style={button.save} className='pointer w-50'>
+                <p style={button.btnTypography} className='m-0'>Create</p></Button>
             </div>
           </Modal.Footer>
         </Form>
