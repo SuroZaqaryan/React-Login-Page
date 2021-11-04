@@ -2,16 +2,28 @@ import React, { useState } from "react";
 import EditIcon from '../../icons/edit.svg'
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { Link, useLocation } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import Remove from '../../icons/remove.svg'
+import Add from '../../icons/add.svg'
 function Dashboard() {
 
   const [show, setShow] = useState(false);
+  const [showModalCreateUser, SetShowModalCreateUser] = useState(false);
   const [edit, setEdit] = useState(false);
   const [items, setItems] = useState([]);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleCloseCreateUser = () => SetShowModalCreateUser(false);
+  const handleShowCreateUser = () => SetShowModalCreateUser(true);
 
   let location = useLocation();
   let admin = location.state.type;
@@ -81,16 +93,17 @@ function Dashboard() {
       ...items,
       {
         id: 1,
-        name: 'Alex',
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
       }
     ]);
   };
 
-  function removeUser(item,index) {
-    console.log(item, index)
-    setItems([...items.slice(0, index)])
+  function removeUser(index) {
+    setItems([...items.slice(0, index), ...items.slice(index + 1)]);
   }
-
 
   return (
     <div style={{ marginTop: '6rem' }} className='container '>
@@ -112,9 +125,10 @@ function Dashboard() {
                 <Button style={{ ...button.save, padding: '8px 0', marginRight: '0.6rem' }} className='w-50 pointer'>
                   <p style={button.btnTypography} className='m-0'>All Users</p></Button>
                 <Button onClick={handleShow} style={{ ...button, marginRight: '0.6rem', padding: '8px 0', border: '1px solid #9847EA', background: 'transparent' }} className='w-50 pointer'>
-                  <p style={button.btnTypography} className='m-0'> <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                    <path d="M4.31055 12H20.6895M12.5 3.81055V20.1895" stroke="#9847EA" stroke-width="2" stroke-linecap="round" />
-                  </svg></span> <span style={{ color: '#9847EA' }}>Create User</span></p></Button>
+                  <p style={button.btnTypography} className='m-0'>
+                    <span>
+                      <img src={Add} alt="add" />
+                    </span> <span style={{ color: '#9847EA' }}>Create User</span></p></Button>
               </div>
               :
               ''
@@ -178,42 +192,94 @@ function Dashboard() {
         </div>
       </div>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} scrollable={true} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>All Users</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
-            <Button
+            {/* <Button
               onClick={addItem}
               style={{ ...button, maxWidth: '151px', padding: '8px 0', border: '1px solid #9847EA', background: 'transparent' }} className='w-50 pointer'>
-              <p className='m-0' style={button.btnTypography}> <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                <path d="M4.31055 12H20.6895M12.5 3.81055V20.1895" stroke="#9847EA" stroke-width="2" stroke-linecap="round" />
-              </svg></span> <span style={{ color: '#9847EA' }}>Create User</span></p></Button>
-            <div className='user-list'>
-              {items.map((item, index) => (
-                <div key={index} className='d-flex align-items-center justify-content-between' style={{ marginBottom: '32px' }}>
-                  <div>
-                    <div className='d-flex align-items-center'>
-                      <div style={{ marginRight: '15px' }}>
-                        <img className='mw-100' width='32' height='32' src="https://cdn1.iconfinder.com/data/icons/avatar-97/32/avatar-02-512.png"
-                          alt="" />
-                      </div>
+              <p className='m-0' style={button.btnTypography}> <span>
+                <img src={Add} alt="add" />
+              </span>
+                <span style={{ color: '#9847EA' }}>Create User</span></p>
+            </Button> */}
+
+            <Button
+              onClick={handleShowCreateUser}
+              style={{ ...button, maxWidth: '151px', padding: '8px 0', border: '1px solid #9847EA', background: 'transparent' }} className='w-50 pointer'>
+              <p className='m-0' style={button.btnTypography}> <span>
+                <img src={Add} alt="add" />
+              </span>
+                <span style={{ color: '#9847EA' }}>Create User</span></p>
+            </Button>
+            {
+              items.length != 0 ?
+                <div className='user-list'>
+                  {items.map((item, index) => (
+                    <div key={index} className='d-flex align-items-center justify-content-between' style={{ marginBottom: '32px' }}>
                       <div>
-                        <p className='m-0'>{item.name}</p>
+                        <div className='d-flex align-items-center'>
+                          <div style={{ marginRight: '15px' }}>
+                            <img className='mw-100' width='32' height='32' src="https://cdn1.iconfinder.com/data/icons/avatar-97/32/avatar-02-512.png"
+                              alt="" />
+                          </div>
+                          <div>
+                            <p className='m-0'>{item.firstName}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div onClick={() => removeUser(index)} className='pointer'>
+                        <img src={Remove} alt="" />
                       </div>
                     </div>
-                  </div>
-                  <div onClick={() => removeUser(item,index)} className='pointer'>
-                    <img src={Remove} alt="" />
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+                :
+                ''
+            }
+
+
           </div>
         </Modal.Body>
         <Modal.Footer>
         </Modal.Footer>
+      </Modal>
+
+      <Modal show={showModalCreateUser} onHide={handleCloseCreateUser}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create User</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={addItem}>
+          <Modal.Body>
+
+            <Form.Group className="mb-3" >
+              <Form.Control value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+            </Form.Group>
+
+          </Modal.Body>
+          <Modal.Footer>
+            <div className='w-100 d-flex align-items-center'>
+              <Button className='w-50' style={{ marginRight: '5px' }} variant="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button type="submit" className='w-50' variant="primary" >
+                Create
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </div>
   );

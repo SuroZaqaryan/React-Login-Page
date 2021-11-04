@@ -56,3 +56,7 @@ input::placeholder {
   margin-top: 16px;
   padding: 24px 32px;
 }
+
+.user-list > div:last-child {
+  margin-bottom: 0 !important;
+}
